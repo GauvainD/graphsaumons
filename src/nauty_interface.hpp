@@ -58,22 +58,38 @@ namespace phoeg
 
     /**
      * Returns the canonical form of the given graph with n vertices and m edges
+     * The new ordering of the nodes is contained in the order array given as a
+     * parameter. This array should have a length equals to the order of the
+     * graph.
      * @param g the graph
+     * @param order an array of length n (order of g)
      * @return the canonical form of the graph
      */
-    phoeg::Graph cannonForm(const phoeg::Graph& g)
+    phoeg::Graph cannonFormOrder(const phoeg::Graph& g, int order[])
     {
         int n = num_vertices(g), m = num_edges(g);
-        int lab[n], ptn[n], orbit[n];
+        int ptn[n], orbit[n];
         static DEFAULTOPTIONS_GRAPH(options);
         options.getcanon = 1;
         statsblk stats;
         graph array[n*m], canon[n*m];
         EMPTYGRAPH(array, m, n);
         detail::fillArrayGraph(g, n, m, array);
-        densenauty(array, lab, ptn, orbit, &options, &stats, m, n, canon);
+        densenauty(array, order, ptn, orbit, &options, &stats, m, n, canon);
         phoeg::Graph ng(n);
         detail::fillGraph(ng, n, m, canon);
         return ng;
+    }
+
+    /**
+     * Returns the canonical form of the given graph with n vertices and m edges
+     * @param g the graph
+     * @return the canonical form of the graph
+     */
+    phoeg::Graph cannonForm(const phoeg::Graph& g)
+    {
+        int n = num_vertices(g);
+        int order[n];
+        return cannonFormOrder(g,order);
     }
 }
