@@ -59,7 +59,7 @@ void initGraphs()
 void clearGraph(Graph & g)
 {
     for (p_vertex_iter it = vertices(g); it.first != it.second; ++it.first) {
-      boost::clear_vertex(*it.first, g);
+        boost::clear_vertex(*it.first, g);
     }
 }
 
@@ -73,10 +73,15 @@ void clearGraphs()
     clearGraph(g6);
 }
 
-struct config
-{
-    config() {initGraphs();}
-    ~config() {clearGraphs();}
+struct config {
+    config()
+    {
+        initGraphs();
+    }
+    ~config()
+    {
+        clearGraphs();
+    }
 };
 
 BOOST_FIXTURE_TEST_SUITE(s, config)
@@ -195,8 +200,7 @@ template<class type>
 void checkEqualVector(vector<type> v, vector<type> w)
 {
     BOOST_CHECK_EQUAL(v.size(), w.size());
-    for (long i = 0; i < v.size(); ++i)
-    {
+    for (long i = 0; i < v.size(); ++i) {
         BOOST_CHECK_EQUAL(v[i], w[i]);
     }
 }
@@ -204,8 +208,7 @@ void checkEqualVector(vector<type> v, vector<type> w)
 void checkEqualMatrix(dMatrix m, dMatrix n)
 {
     BOOST_CHECK_EQUAL(m.size(), n.size());
-    for (long i = 0; i < m.size(); ++i)
-    {
+    for (long i = 0; i < m.size(); ++i) {
         checkEqualVector(m[i],n[i]);
     }
 }
@@ -218,14 +221,14 @@ void checkEqualGraph(const Graph& g1, const Graph& g2)
     BOOST_CHECK_EQUAL(numEdges(g1), numEdges(g2));
     p_vertex_iter u1 = boost::vertices(g1), u2 = boost::vertices(g2);
     while (u1.first != u1.second && u2.first != u2.second) {
-      p_vertex_iter v1 = boost::vertices(g1), v2 = boost::vertices(g2);
-      while (v1.first != u1.first && v2.first != u2.first) {
-        BOOST_CHECK(edge(*u1.first,*v1.first, g1).second == edge(*u2.first,*v2.first, g2).second);
-        v1.first++;
-        v2.first++;
-      }
-      u1.first++;
-      u2.first++;
+        p_vertex_iter v1 = boost::vertices(g1), v2 = boost::vertices(g2);
+        while (v1.first != u1.first && v2.first != u2.first) {
+            BOOST_CHECK(edge(*u1.first,*v1.first, g1).second == edge(*u2.first,*v2.first, g2).second);
+            v1.first++;
+            v2.first++;
+        }
+        u1.first++;
+        u2.first++;
     }
 }
 
@@ -238,8 +241,7 @@ vector<long> initVector(long arr[], long size)
 dMatrix initMatrix(long arr[], long width, long height)
 {
     dMatrix mat(height);
-    for (long i = 0; i < height; ++i)
-    {
+    for (long i = 0; i < height; ++i) {
         vector<long> v(arr+(i*width), arr+((i+1)*width));
         mat[i] = v;
     }
@@ -268,25 +270,29 @@ BOOST_AUTO_TEST_CASE(distanceMatrixTest)
                   INF, 0, INF, INF, INF,
                   INF, INF, 0, INF, INF,
                   INF, INF, INF, 0, INF,
-                  INF, INF, INF, INF, 0};
+                  INF, INF, INF, INF, 0
+                 };
     checkEqualMatrix(initMatrix(g1t, 5, 5), distanceMatrix(g1));
     long g2t[] = {0, 1, 1, INF, INF,
                   1, 0, 1, INF, INF,
                   1, 1, 0, INF, INF,
                   INF, INF, INF, 0, 1,
-                  INF, INF, INF, 1, 0};
+                  INF, INF, INF, 1, 0
+                 };
     checkEqualMatrix(initMatrix(g2t, 5, 5), distanceMatrix(g2));
     long g3t[] = {0, 1, 1, 2, 2,
                   1, 0, 2, 1, 1,
                   1, 2, 0, 3, 3,
                   2, 1, 3, 0, 2,
-                  2, 1, 3, 2, 0};
+                  2, 1, 3, 2, 0
+                 };
     checkEqualMatrix(initMatrix(g3t, 5, 5), distanceMatrix(g3));
     long g4t[] = {0, 1, 2, 2, 1,
                   1, 0, 1, 1, 2,
                   2, 1, 0, 1, 2,
                   2, 1, 1, 0, 1,
-                  1, 2, 2, 1, 0};
+                  1, 2, 2, 1, 0
+                 };
     checkEqualMatrix(initMatrix(g4t, 5, 5), distanceMatrix(g4));
     long g5t[] = {0};
     checkEqualMatrix(initMatrix(g5t, 1, 1), distanceMatrix(g5));
@@ -294,7 +300,8 @@ BOOST_AUTO_TEST_CASE(distanceMatrixTest)
                   1, 0, 1, 1, 1,
                   1, 1, 0, 1, 1,
                   1, 1, 1, 0, 1,
-                  1, 1, 1, 1, 0};
+                  1, 1, 1, 1, 0
+                 };
     checkEqualMatrix(initMatrix(g6t, 5, 5), distanceMatrix(g6));
 }
 

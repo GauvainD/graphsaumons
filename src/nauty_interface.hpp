@@ -4,10 +4,8 @@
 #include "graph.hpp"
 #include "nauty.h"
 
-namespace phoeg
-{
-    namespace detail
-    {
+namespace phoeg {
+    namespace detail {
         /**
          * Fill the array by adding the edges of the graph g
          * @param g the graph to put in array
@@ -17,12 +15,9 @@ namespace phoeg
          */
         void fillArrayGraph(const phoeg::Graph & g, int n, int m, graph *array)
         {
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    if (edge(i,j,g).second)
-                    {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (edge(i, j, g).second) {
                         ADDONEEDGE(array, i, j, m);
                     }
                 }
@@ -42,14 +37,11 @@ namespace phoeg
             set *row;
             //We skip the first vertex since we want the inferior
             //half of the adjacency matrix
-            for (int i = 1; i < n ; ++i)
-            {
+            for (int i = 1; i < n ; ++i) {
                 row = GRAPHROW(array, i, m);
-                for (int j = 0; j < i; ++j)
-                {
-                    if (ISELEMENT(row, j))
-                    {
-                        add_edge(i,j,g);
+                for (int j = 0; j < i; ++j) {
+                    if (ISELEMENT(row, j)) {
+                        add_edge(i, j, g);
                     }
                 }
             }
@@ -72,7 +64,7 @@ namespace phoeg
         static DEFAULTOPTIONS_GRAPH(options);
         options.getcanon = 1;
         statsblk stats;
-        graph array[n*m], canon[n*m];
+        graph array[n * m], canon[n * m];
         EMPTYGRAPH(array, m, n);
         detail::fillArrayGraph(g, n, m, array);
         densenauty(array, order, ptn, orbit, &options, &stats, m, n, canon);
@@ -90,6 +82,6 @@ namespace phoeg
     {
         int n = num_vertices(g);
         int order[n];
-        return cannonFormOrder(g,order);
+        return cannonFormOrder(g, order);
     }
 }
